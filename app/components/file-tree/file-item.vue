@@ -10,13 +10,13 @@
       {{fileTree.name}}
     </div>
     <input v-if="inputVisible">
-    <file v-show="!fileTree.isFold" v-for="item in fileTree.children " :key="item " :file-tree="item " :left="left+leftAddNum " :left-add-num="leftAddNum "></file>
+    <file v-show="!fileTree.isFold" v-for="(item,index) in fileTree.children " :key="item " :file-tree="item " :left="left+leftAddNum " :left-add-num="leftAddNum"></file>
   </div>
 </template>
 
 <script>
 import * as types from '../../store/mutation-types'
-import { openText } from '../../static/utils/file-operator.js'
+// import { openText } from '../../static/utils/file-operator.js'
 
 export default {
 
@@ -50,8 +50,9 @@ export default {
       this.$store.dispatch(types.SET_CLICK_FILE_OBJ, fileObj)
     },
     openText(fileObj) {
-      console.log(openText)
-      console.log(openText(fileObj.path))
+      this.$store.dispatch(types.ADD_FILE_BAR_ITEM, fileObj)
+      // console.log(openText)
+      // console.log(openText(fileObj.path))
     }
   }
 }

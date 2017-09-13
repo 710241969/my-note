@@ -12,7 +12,8 @@ const state = {
   openFileContent: '',
   initPath: '',
   inputVisible: false,
-  currentDirPath: '' // 当前文件夹路径
+  currentDirPath: '', // 当前文件夹路径
+  fileBarArray: []
 }
 
 // getters
@@ -34,6 +35,9 @@ const getters = {
   },
   currentDirPath() {
     return state.currentDirPath
+  },
+  getFileBarArray() {
+    return state.fileBarArray
   }
 }
 
@@ -53,7 +57,11 @@ const actions = {
   },
   [types.SET_CURRENT_DIR_PATH](context, path) {
     context.commit(types.SET_CURRENT_DIR_PATH, path)
+  },
+  [types.ADD_FILE_BAR_ITEM](context, fileObj) {
+    context.commit(types.ADD_FILE_BAR_ITEM, fileObj)
   }
+
 }
 
 // mutations
@@ -73,6 +81,14 @@ const mutations = {
   },
   [types.SET_CURRENT_DIR_PATH](state, path) {
     state.currentDirPath = path
+  },
+  [types.ADD_FILE_BAR_ITEM](state, fileObj) {
+    for (let i = 0; i < state.fileBarArray.length; i++) {
+      if (state.fileBarArray[i].path === fileObj.path) {
+        return
+      }
+    }
+    state.fileBarArray.push(fileObj)
   }
 }
 

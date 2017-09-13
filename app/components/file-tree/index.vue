@@ -29,7 +29,8 @@
     <!--文件目录div-->
     <div class="file-content-div">
       <!--文件目录内容-->
-      <file-item v-for="item in fileTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum"></file-item>
+      <file-item v-for="item in fileTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum">
+      </file-item>
     </div>
 
   </main>
@@ -115,7 +116,7 @@ export default {
   .drag {
     height: 100%;
     width: 5px;
-    background-color: white;
+    background-color: black;
     float: right;
     cursor: ew-resize;
   }

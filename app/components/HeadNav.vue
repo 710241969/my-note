@@ -89,6 +89,7 @@ export default {
       right: 4px;
       position: fixed;
       top: 3px;
+      cursor: default;
       .window-i {
         width: 40px;
         text-align: center;

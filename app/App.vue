@@ -9,7 +9,7 @@
 <script>
 import HeadNav from './components/HeadNav.vue'
 import FileTree from './components/file-tree'
-import TextShow from './components/TextShow.vue'
+import TextShow from './components/text-show'
 
 export default {
   data() {
