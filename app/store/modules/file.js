@@ -12,8 +12,14 @@ const state = {
   openFileContent: '',
   initPath: '',
   inputVisible: false,
-  currentDirPath: '', // 当前文件夹路径
-  fileBarArray: []
+  fileBarArray: [],
+
+  currentDirPath: '', // 当前选择的文件夹路径
+  currentShowFile: {// 当前打开文件路径
+    name: '',
+    path: '',
+    content: ''
+  }
 }
 
 // getters
@@ -38,6 +44,12 @@ const getters = {
   },
   getFileBarArray() {
     return state.fileBarArray
+  },
+  getCurrentShowFile() {
+    return state.currentShowFile
+  },
+  getFileByIndex(index) {
+    return state.fileBarArray[index]
   }
 }
 
@@ -58,10 +70,14 @@ const actions = {
   [types.SET_CURRENT_DIR_PATH](context, path) {
     context.commit(types.SET_CURRENT_DIR_PATH, path)
   },
+  // 文件BAR条添加文件对象
   [types.ADD_FILE_BAR_ITEM](context, fileObj) {
     context.commit(types.ADD_FILE_BAR_ITEM, fileObj)
+  },
+  // 设置当前打开的文件路径
+  [types.SET_CURRENT_SHOW_FILE](context, fileObj) {
+    context.commit(types.SET_CURRENT_SHOW_FILE, fileObj)
   }
-
 }
 
 // mutations
@@ -82,6 +98,7 @@ const mutations = {
   [types.SET_CURRENT_DIR_PATH](state, path) {
     state.currentDirPath = path
   },
+  // 文件BAR条添加文件对象
   [types.ADD_FILE_BAR_ITEM](state, fileObj) {
     for (let i = 0; i < state.fileBarArray.length; i++) {
       if (state.fileBarArray[i].path === fileObj.path) {
@@ -89,6 +106,12 @@ const mutations = {
       }
     }
     state.fileBarArray.push(fileObj)
+  },
+  // 设置当前打开的文件路径
+  [types.SET_CURRENT_SHOW_FILE](state, fileObj) {
+    state.currentShowFile.name = fileObj.name
+    state.currentShowFile.path = fileObj.path
+    state.currentShowFile.content = fileObj.content
   }
 }
 

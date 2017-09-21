@@ -5,7 +5,7 @@
       <i v-else class="fa fa-folder-open"></i>
       {{fileTree.name}}
     </div>
-    <div v-else :class="[isClick?'click-file-div':'no-click-file-div']" :style="{paddingLeft:`${left}px`}" @click="clickFile(fileTree)" @dblclick="openText(fileTree)">
+    <div v-else :class="[isClick?'click-file-div':'no-click-file-div']" :style="{paddingLeft:`${left}px`}" @click="clickFile(fileTree)" @dblclick="dbClickOpenText(fileTree)">
       <i class=" fa fa-file-text "></i>
       {{fileTree.name}}
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 import * as types from '../../store/mutation-types'
-// import { openText } from '../../static/utils/file-operator.js'
+import { getFileContent } from '../../static/utils/file-operator.js'
 
 export default {
 
@@ -49,10 +49,19 @@ export default {
       }
       this.$store.dispatch(types.SET_CLICK_FILE_OBJ, fileObj)
     },
-    openText(fileObj) {
-      this.$store.dispatch(types.ADD_FILE_BAR_ITEM, fileObj)
-      // console.log(openText)
-      // console.log(openText(fileObj.path))
+    // 双击文件打开
+    dbClickOpenText(fileObj) {
+      let file = {
+        name: fileObj.name,
+        path: fileObj.path
+      }
+      file.content = getFileContent(fileObj.path)
+      this.$store.dispatch(types.ADD_FILE_BAR_ITEM, file)// 文件BAR条添加文件对象
+      this.$store.dispatch(types.SET_CURRENT_SHOW_FILE, file)// 设置当前打开的文件路径
+
+      // console.log()
+      // console.log(file)
+      // console.log()
     }
   }
 }

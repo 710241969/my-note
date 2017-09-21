@@ -1,6 +1,6 @@
 var fs = require('fs')
 
-function openText(path) {
+function getFileContent(path) {
   return fs.readFileSync(path, 'UTF-8')
 }
 
@@ -12,4 +12,4 @@ function createDir(path) {
   return fs.mkdirSync(path)
 }
 
-export { openText, createText, createDir }
+export { getFileContent, createText, createDir }

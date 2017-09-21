@@ -3,26 +3,45 @@
   <div class="text-show">
     <!-- 标签页 -->
     <div style="height:39px;background-color:rgb(243, 243, 243);box-shadow: 0px 1px 10px black;">
-      <file-bar v-for="file in this.$store.getters.getFileBarArray" :key="file" :file="file"></file-bar>
+      <file-bar v-for="(file,index) in this.$store.getters.getFileBarArray" :key="file" :file="file" :index="index"></file-bar>
     </div>
     <div style="height: 670px;">
-      <div contenteditable="true" class="title-input-div"></div>
-      <div contenteditable="true" class="text-input-div"></div>
+      <!-- 标题 -->
+      <!-- <div contenteditable="true" class="title-input-div"></div> -->
+
+      <editor-bar></editor-bar>
+
+      <!-- 正文内容 -->
+      <div contenteditable="true" class="text-input-div">
+        {{currentShowFileContent}}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import fileBar from './file-bar.vue'
+import editorBar from './editor-bar.vue'
+
 export default {
   data() {
     return {
     }
   },
+  computed: {
+    currentShowFileContent() {
+      return this.$store.getters.getCurrentShowFile.content
+    }
+  },
+  created() {
+  },
+  mounted() {
+  },
   methods: {
   },
   components: {
-    fileBar
+    fileBar,
+    editorBar
   }
 }
 
@@ -63,6 +82,10 @@ export default {
   height: 610px;
   &:focus {
     outline: none;
+  }
+  ul,
+  ol {
+    margin: 10px 20px;
   }
 }
 </style>
