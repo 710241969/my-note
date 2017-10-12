@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 5px;background-color:#f1f1f1;">
+  <div style="padding: 5px;background-color:#f1f1f1;border-bottom: 1px solid #cccccc;">
     <button class="edit-btn">
       <i class=" fa fa-bold edit-btn-i" @click="execCommand('bold')"></i>
     </button>

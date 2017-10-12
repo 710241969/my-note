@@ -9,26 +9,33 @@
       <i class=" fa fa-file-text "></i>
       {{fileTree.name}}
     </div>
-    <input v-if="inputVisible">
+
+    <!-- 文件名/目录名 输入框 -->
+    <input id="name-input" v-if="inputVisible" v-model="inputName" @blur="createFileOrDir">
+
     <file v-show="!fileTree.isFold" v-for="(item,index) in fileTree.children " :key="item " :file-tree="item " :left="left+leftAddNum " :left-add-num="leftAddNum"></file>
   </div>
 </template>
 
 <script>
 import * as types from '../../store/mutation-types'
-import { getFileContent } from '../../static/utils/file-operator.js'
+import fileOperator from '../../static/utils/file-operator.js'
 
 export default {
 
   name: 'file',
   data() {
     return {
+      inputName: '',
+      path: ''
     }
   },
   props: {
     fileTree: {},
     left: {},
     leftAddNum: {}
+  },
+  watch: {
   },
   computed: {
     isClick() {
@@ -55,13 +62,23 @@ export default {
         name: fileObj.name,
         path: fileObj.path
       }
-      file.content = getFileContent(fileObj.path)
+      file.content = fileOperator.readFile(fileObj.path)
       this.$store.dispatch(types.ADD_FILE_BAR_ITEM, file)// 文件BAR条添加文件对象
       this.$store.dispatch(types.SET_CURRENT_SHOW_FILE, file)// 设置当前打开的文件路径
 
       // console.log()
       // console.log(file)
       // console.log()
+    },
+    // 创建文件夹或者文件
+    createFileOrDir() {
+      if (this.inputName) {
+        fileOperator.createFileOrDir(this.$store.getters.currentDirPath + this.inputName, this.$store.getters.getCreateType).then(() => {
+          this.inputName = ''
+        })
+      }
+      this.inputName = ''
+      this.$store.dispatch(types.SET_INPUT_VISIBLE, false)
     }
   }
 }

@@ -3,6 +3,7 @@ import * as types from '../mutation-types'
 // initial state
 // shape: [{ id, quantity }]
 const state = {
+  // rootPath: '', // 根目录路径
   clickFileObj: { // 当前点击的文件对象,path:路径;isDir:是否文件夹
     path: null,
     isDir: null
@@ -10,15 +11,17 @@ const state = {
   clickFilePath: '', // 当前点击文件路径
   openFileObj: {},
   openFileContent: '',
-  initPath: '',
   inputVisible: false,
   fileBarArray: [],
 
-  currentDirPath: '', // 当前选择的文件夹路径
-  currentShowFile: {// 当前打开文件路径
+  currentDirPath: null, // 当前选择的目录路径
+  createType: 1,
+
+  currentShowFile: {// 当前打开的文件
     name: '',
     path: '',
-    content: ''
+    content: '',
+    editable: false // 初始为不可编辑
   }
 }
 
@@ -33,9 +36,9 @@ const getters = {
   // openFilePath() {
   //   return state.openFileObj.path
   // },
-  initPath() {
-    return state.initPath
-  },
+  // rootPath() {
+  //   return state.rootPath
+  // },
   inputVisible() {
     return state.inputVisible
   },
@@ -50,6 +53,9 @@ const getters = {
   },
   getFileByIndex(index) {
     return state.fileBarArray[index]
+  },
+  getCreateType() {
+    return state.createType
   }
 }
 
@@ -58,8 +64,8 @@ const actions = {
   [types.SET_CLICK_FILE_OBJ](context, fileObj) {
     context.commit(types.SET_CLICK_FILE_OBJ, fileObj)
   },
-  [types.SET_INIT_PATH](context, path) {
-    context.commit(types.SET_INIT_PATH, path)
+  [types.SET_ROOT_PATH](context, path) {
+    context.commit(types.SET_ROOT_PATH, path)
   },
   [types.SET_OPEN_FILE_OBJ](context, path) {
     context.commit(types.SET_OPEN_FILE_OBJ, path)
@@ -77,6 +83,16 @@ const actions = {
   // 设置当前打开的文件路径
   [types.SET_CURRENT_SHOW_FILE](context, fileObj) {
     context.commit(types.SET_CURRENT_SHOW_FILE, fileObj)
+  },
+  // 转换当前文件的 编辑/保存 状态
+  [types.SET_EDITABLE](context, boolean) {
+    context.commit(types.SET_EDITABLE, boolean)
+  },
+  [types.UPDATE_CONTENT](context, contentString) {
+    context.commit(types.UPDATE_CONTENT, contentString)
+  },
+  [types.SET_CREATE_TYPE](context, type) {
+    context.commit(types.SET_CREATE_TYPE, type)
   }
 }
 
@@ -89,9 +105,9 @@ const mutations = {
   [types.SET_OPEN_FILE_OBJ](state, path) {
     state.openFileObj = path
   },
-  [types.SET_INIT_PATH](state, path) {
-    state.initPath = path
-  },
+  // [types.SET_ROOT_PATH](state, path) {
+  //   state.rootPath = path
+  // },
   [types.SET_INPUT_VISIBLE](state, boolean) {
     state.inputVisible = boolean
   },
@@ -112,6 +128,15 @@ const mutations = {
     state.currentShowFile.name = fileObj.name
     state.currentShowFile.path = fileObj.path
     state.currentShowFile.content = fileObj.content
+  },
+  [types.SET_EDITABLE](state, boolean) {
+    state.currentShowFile.editable = boolean
+  },
+  [types.UPDATE_CONTENT](state, contentString) {
+    state.currentShowFile.content = contentString
+  },
+  [types.SET_CREATE_TYPE](state, type) {
+    state.createType = type
   }
 }
 
