@@ -20,10 +20,10 @@ function initFile(eventType, filename) {
   console.time('测试 获取文件目录fn 速度: ')
 
   // 判断目录是否存在
-  if (fs.existsSync(`${path}\\note\\`)) {
-  } else { // 创建初始文件
-    fs.mkdirSync(`${path}\\note\\`)
+  if (!fs.existsSync(`${path}\\note\\`)) {
+    fs.mkdirSync(`${path}\\note\\`) // 不存在则创建初始文件
   }
+
   // 初始化文件树对象
   Object.assign(filesTree, {
     name: 'note',
@@ -71,7 +71,7 @@ function initFile(eventType, filename) {
         dirArrayTmp.push(obj)
       } else {
         obj.name = file.substring(0, file.lastIndexOf('.'))
-        obj.path = `${pathTmp}${file}`
+        // obj.path = `${pathTmp}${file}`
         fileArrayTmp.push(obj)
       }
     }
@@ -82,7 +82,7 @@ function initFile(eventType, filename) {
   console.timeEnd('测试 获取文件目录fn 速度: ')
 }
 
-fs.watch(`${path}\\note\\`, initFile)
+// fs.watch(`${path}\\note\\`, initFile)
 
 initFile()
 

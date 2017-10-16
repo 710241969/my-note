@@ -28,7 +28,7 @@
     <!--文件目录树展示div-->
     <div class="file-content-div">
       <!--文件目录内容-->
-      <file-item v-for="item in fileTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum">
+      <file-item v-for="item in fileTree" :key="item" :file-trees="item" :left="left" :left-add-num="leftAddNum">
       </file-item>
     </div>
 

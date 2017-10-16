@@ -12,14 +12,13 @@
 
     <!-- 文件名/目录名 输入框 -->
     <input id="name-input" v-if="inputVisible" v-model="inputName" @blur="createFileOrDir">
-
-    <file v-show="!fileTree.isFold" v-for="(item,index) in fileTree.children " :key="item " :file-tree="item " :left="left+leftAddNum " :left-add-num="leftAddNum"></file>
+    <file v-show="!fileTree.isFold" v-for="(item,index) in fileTree.children " :key="item " :file-trees="item " :left="left+leftAddNum " :left-add-num="leftAddNum"></file>
   </div>
 </template>
 
 <script>
 import * as types from '../../store/mutation-types'
-import fileOperator from '../../static/utils/file-operator.js'
+import * as fileOperator from '../../static/utils/file-operator.js'
 
 export default {
 
@@ -27,11 +26,12 @@ export default {
   data() {
     return {
       inputName: '',
-      path: ''
+      path: '',
+      fileTree: this.fileTrees
     }
   },
   props: {
-    fileTree: {},
+    fileTrees: {},
     left: {},
     leftAddNum: {}
   },
@@ -45,6 +45,8 @@ export default {
       return (
         this.$store.getters.currentDirPath === this.fileTree.path && this.$store.getters.inputVisible && this.fileTree.isDir)
     }
+  },
+  created() {
   },
   methods: {
     clickFile(fileObj) {
@@ -72,13 +74,20 @@ export default {
     },
     // 创建文件夹或者文件
     createFileOrDir() {
-      if (this.inputName) {
-        fileOperator.createFileOrDir(this.$store.getters.currentDirPath + this.inputName, this.$store.getters.getCreateType).then(() => {
+      return new Promise((resolve, reject) => {
+        if (this.inputName) {
+          fileOperator.createFileOrDir(this.$store.getters.currentDirPath + this.inputName, this.$store.getters.getCreateType).then(() => {
+            this.inputName = ''
+            this.fileTree = fileOperator.throughPath(this.fileTree)
+            return resolve()
+          })
+        } else {
           this.inputName = ''
-        })
-      }
-      this.inputName = ''
-      this.$store.dispatch(types.SET_INPUT_VISIBLE, false)
+        }
+        return resolve()
+      }).then(() => {
+        this.$store.dispatch(types.SET_INPUT_VISIBLE, false)
+      })
     }
   }
 }
