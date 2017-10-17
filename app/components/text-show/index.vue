@@ -33,7 +33,7 @@ import * as types from '../../store/mutation-types'
 import FileBar from './file-bar.vue'
 import EditorBar from './editor-bar.vue'
 import ContentDiv from './content-div.vue'
-import fileOperator from '../../static/utils/file-operator.js'
+import * as fileOperator from '../../static/utils/file-operator.js'
 
 export default {
   data() {

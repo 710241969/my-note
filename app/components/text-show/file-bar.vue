@@ -39,7 +39,7 @@ export default {
 <style lang="scss">
 .file-bar-div {
   height: 100%;
-  width: 150px;
+  min-width: 150px;
   border-left-color: rgb(243, 243, 243);
   border-right-color: rgb(243, 243, 243);
   background-color: rgb(236, 236, 236);
