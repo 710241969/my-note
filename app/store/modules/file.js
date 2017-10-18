@@ -22,7 +22,9 @@ const state = {
     path: '',
     content: '',
     editable: false // 初始为不可编辑
-  }
+  },
+
+  currentDirOBJ: null // 当前所在目录，可影响视图，添加文件、文件夹时使用
 }
 
 // getters
@@ -56,6 +58,9 @@ const getters = {
   },
   getCreateType() {
     return state.createType
+  },
+  currentDirOBJ() {
+    return state.currentDirOBJ
   }
 }
 
@@ -93,6 +98,14 @@ const actions = {
   },
   [types.SET_CREATE_TYPE](context, type) {
     context.commit(types.SET_CREATE_TYPE, type)
+  },
+
+  // 设置当前所在目录
+  [types.SET_CURRENT_DIR_OBJ](context, dirOBJ) {
+    context.commit(types.SET_CURRENT_DIR_OBJ, dirOBJ)
+  },
+  [types.UPDATE_CURRENT_DIR_OBJ_FOLD](context) {
+    context.commit(types.UPDATE_CURRENT_DIR_OBJ_FOLD)
   }
 }
 
@@ -137,6 +150,12 @@ const mutations = {
   },
   [types.SET_CREATE_TYPE](state, type) {
     state.createType = type
+  },
+  [types.SET_CURRENT_DIR_OBJ](state, dirOBJ) {
+    state.currentDirOBJ = dirOBJ
+  },
+  [types.UPDATE_CURRENT_DIR_OBJ_FOLD](state) {
+    state.currentDirOBJ.isFold = !state.currentDirOBJ.isFold
   }
 }
 

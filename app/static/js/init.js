@@ -71,7 +71,7 @@ function initFile(eventType, filename) {
         dirArrayTmp.push(obj)
       } else {
         obj.name = file.substring(0, file.lastIndexOf('.'))
-        // obj.path = `${pathTmp}${file}`
+        obj.path = `${pathTmp}${file}`
         fileArrayTmp.push(obj)
       }
     }

@@ -26,9 +26,9 @@
       </span>
     </div>
     <!--文件目录树展示div-->
-    <div class="file-content-div" >
+    <div class="file-content-div">
       <!--文件目录内容-->
-      <file-item v-for="item in fileTree" :key="item" :file-trees="item" :left="left" :left-add-num="leftAddNum">
+      <file-item v-for="item in fileTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum">
       </file-item>
     </div>
 
@@ -59,8 +59,9 @@ export default {
   methods: {
     // 显示输入框，通过type区分是创建文件还是创建文件夹，1文件，2文件夹
     showInput(type) {
-      this.$store.dispatch(types.SET_CREATE_TYPE, type)
       this.setCurrentPath()
+      this.$store.dispatch(types.SET_CREATE_TYPE, type) // 设置创建的类型
+
       // 当输入框被加载后，在去设置获得光标。
       // 使用Promise就是为了在设置光标时，输入框已经被加载，否则报错，因为输入框还没加载完成
       new Promise((resolve, reject) => {
@@ -73,6 +74,10 @@ export default {
     setCurrentPath() {
       if (!this.$store.getters.currentDirPath) {
         this.$store.dispatch(types.SET_CURRENT_DIR_PATH, this.rootPath)
+        this.$store.dispatch(types.SET_CURRENT_DIR_OBJ, FILE_TREE)
+      }
+      if (this.$store.getters.currentDirOBJ.isFold) {
+        this.$store.dispatch(types.UPDATE_CURRENT_DIR_OBJ_FOLD)
       }
     }
   },
