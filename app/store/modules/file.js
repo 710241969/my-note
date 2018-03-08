@@ -4,15 +4,12 @@ import * as types from '../mutation-types'
 // shape: [{ id, quantity }]
 const state = {
   // rootPath: '', // 根目录路径
-  clickFileObj: { // 当前点击的文件对象,path:路径;isDir:是否文件夹
-    path: null,
-    isDir: null
+  clickFileObj: { // 当前点击的文件对象
   },
   clickFilePath: '', // 当前点击文件路径
   openFileObj: {},
   openFileContent: '',
   inputVisible: false,
-  fileBarArray: [],
 
   currentDirPath: null, // 当前选择的目录路径
   createType: 1,
@@ -23,8 +20,9 @@ const state = {
     content: '',
     editable: false // 初始为不可编辑
   },
-
-  currentDirOBJ: null // 当前所在目录，可影响视图，添加文件、文件夹时使用
+  currentDirOBJ: null, // 当前所在目录，可影响视图，添加文件、文件夹时使用
+  dirMap: {}, // 路径map（删除时文件、目录时使用）
+  filesTree: {}
 }
 
 // getters
@@ -47,14 +45,12 @@ const getters = {
   currentDirPath() {
     return state.currentDirPath
   },
-  getFileBarArray() {
-    return state.fileBarArray
-  },
+
   getCurrentShowFile() {
     return state.currentShowFile
   },
   getFileByIndex(index) {
-    return state.fileBarArray[index]
+    return state.fileTabArray[index]
   },
   getCreateType() {
     return state.createType
@@ -81,14 +77,6 @@ const actions = {
   [types.SET_CURRENT_DIR_PATH](context, path) {
     context.commit(types.SET_CURRENT_DIR_PATH, path)
   },
-  // 文件BAR条添加文件对象
-  [types.ADD_FILE_BAR_ITEM](context, fileObj) {
-    context.commit(types.ADD_FILE_BAR_ITEM, fileObj)
-  },
-  // 设置当前打开的文件路径
-  [types.SET_CURRENT_SHOW_FILE](context, fileObj) {
-    context.commit(types.SET_CURRENT_SHOW_FILE, fileObj)
-  },
   // 转换当前文件的 编辑/保存 状态
   [types.SET_EDITABLE](context, boolean) {
     context.commit(types.SET_EDITABLE, boolean)
@@ -106,14 +94,22 @@ const actions = {
   },
   [types.UPDATE_CURRENT_DIR_OBJ_FOLD](context) {
     context.commit(types.UPDATE_CURRENT_DIR_OBJ_FOLD)
+  },
+  [types.SET_DIR_MAP](context, dirMap) {
+    context.commit(types.SET_DIR_MAP, dirMap)
+  },
+  [types.SET_FILES_TREE](context, filesTree) {
+    context.commit(types.SET_FILES_TREE, filesTree)
+  },
+  [types.DELETE_ITEM](context, choseFile) {
+    context.commit(types.DELETE_ITEM, choseFile)
   }
 }
 
 // mutations
 const mutations = {
   [types.SET_CLICK_FILE_OBJ](state, fileObj) {
-    state.clickFileObj.path = fileObj.path
-    state.clickFileObj.isDir = fileObj.isDir
+    state.clickFileObj = fileObj
   },
   [types.SET_OPEN_FILE_OBJ](state, path) {
     state.openFileObj = path
@@ -126,21 +122,6 @@ const mutations = {
   },
   [types.SET_CURRENT_DIR_PATH](state, path) {
     state.currentDirPath = path
-  },
-  // 文件BAR条添加文件对象
-  [types.ADD_FILE_BAR_ITEM](state, fileObj) {
-    for (let i = 0; i < state.fileBarArray.length; i++) {
-      if (state.fileBarArray[i].path === fileObj.path) {
-        return
-      }
-    }
-    state.fileBarArray.push(fileObj)
-  },
-  // 设置当前打开的文件路径
-  [types.SET_CURRENT_SHOW_FILE](state, fileObj) {
-    state.currentShowFile.name = fileObj.name
-    state.currentShowFile.path = fileObj.path
-    state.currentShowFile.content = fileObj.content
   },
   [types.SET_EDITABLE](state, boolean) {
     state.currentShowFile.editable = boolean
@@ -156,6 +137,23 @@ const mutations = {
   },
   [types.UPDATE_CURRENT_DIR_OBJ_FOLD](state) {
     state.currentDirOBJ.isFold = !state.currentDirOBJ.isFold
+  },
+  [types.SET_DIR_MAP](state, dirMap) {
+    state.dirMap = dirMap
+  },
+  [types.SET_FILES_TREE](state, filesTree) {
+    state.filesTree = filesTree
+  },
+  // 删除文件或文件夹
+  [types.DELETE_ITEM](state, choseFile) {
+    let fatherDir = choseFile.father
+    let childrenArray = state.dirMap[fatherDir].children
+    for (let i = 0; i < childrenArray.length; i++) {
+      if (childrenArray[i].path === choseFile.path) {
+        childrenArray.splice(i, 1)
+        return
+      }
+    }
   }
 }
 

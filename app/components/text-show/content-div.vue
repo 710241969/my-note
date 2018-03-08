@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     currentShowFileEditable() {
-      return this.$store.getters.getCurrentShowFile.editable
+      return this.$store.getters.getCrrentFile.editable
     }
   },
   watch: {

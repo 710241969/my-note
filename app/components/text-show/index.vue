@@ -3,7 +3,7 @@
   <div class="text-show">
     <!-- 标签页 -->
     <div style="height:39px;background-color:rgb(243, 243, 243);box-shadow: 0px 1px 10px black;">
-      <file-bar v-for="(file,index) in this.$store.getters.getFileBarArray" :key="file" :file="file" :index="index"></file-bar>
+      <file-tab v-for="(file,index) in fileTabArray" :key="file" :file="file" :index="index"></file-tab>
     </div>
     <div style="height: 670px;">
 
@@ -30,7 +30,7 @@
 
 <script>
 import * as types from '../../store/mutation-types'
-import FileBar from './file-bar.vue'
+import FileTab from './file-tab.vue'
 import EditorBar from './editor-bar.vue'
 import ContentDiv from './content-div.vue'
 import * as fileOperator from '../../static/utils/file-operator.js'
@@ -43,11 +43,15 @@ export default {
     }
   },
   computed: {
+    // 文件Tab标签页列表
+    fileTabArray() {
+      return this.$store.getters.getFileBarArray
+    },
     currentFile() {
       return this.$store.getters.getCurrentShowFile
     },
-    currentShowFileContent() {
-      return this.$store.getters.getCurrentShowFile.content
+    currentFileContent() {
+      return this.$store.getters.getCrrentFile.content
     },
     currentShowFileEditable() {
       return this.$store.getters.getCurrentShowFile.editable
@@ -55,14 +59,12 @@ export default {
   },
   watch: {
     // 当前文件内容改变则改变传入编辑div的内容
-    currentShowFileContent: function(val, oldVal) {
+    currentFileContent: function(val, oldVal) {
       this.contentHTML = val
     }
   },
-  created() {
-  },
-  mounted() {
-  },
+  created() {},
+  mounted() {},
   methods: {
     saveContent() {
       // 修改 保存/编辑状态 按钮从保存变为编辑（可编辑）
@@ -77,12 +79,11 @@ export default {
     }
   },
   components: {
-    FileBar,
+    FileTab,
     EditorBar,
     ContentDiv
   }
 }
-
 </script>
 
 <style lang="scss">
@@ -95,8 +96,6 @@ export default {
   position: absolute;
   overflow-y: hidden;
 }
-
-
 
 .title-input-div {
   // text-align: center;
@@ -113,8 +112,6 @@ export default {
     outline: none;
   }
 }
-
-
 
 .option-btn-hr {
   position: absolute;

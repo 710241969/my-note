@@ -9,12 +9,12 @@ export function readFile(path) {
 
 // 文件写入内容
 export function writeFile(path, data) {
-  fs.writeFileSync(path, data)
+  return fs.writeFileSync(path, data)
 }
 
 // 创建文件
 export function createFile(path) {
-  fs.createWriteStream(path + '.mnote')
+  return fs.createWriteStream(path + '.mnote')
 }
 
 // 创建文件夹
@@ -95,6 +95,14 @@ export function throughPath(fileObj) {
     objTmp[pathTmp].push(...dirArrayTmp, ...fileArrayTmp)
   }
   return filesTree
+}
+
+export function deleteFile(path) {
+  fs.unlinkSync(path)
+}
+
+export function deleteDir(path) {
+  fs.rmdirSync(path)
 }
 
 // export default fileOperator

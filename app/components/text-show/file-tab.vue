@@ -1,9 +1,9 @@
 <template>
-  <div class="file-bar-div" :class="[isCurentShowFile?'file-bar-current-div':'']" @click="changeOpenFile(file)">
+  <div class="file-tab-div" :class="[isCurentShowFile?'file-tab-current-div':'']" @click="choseCurrentFile(file)">
     <span class="file-name-span" v-html="file.name"></span>
-    <i class="fa fa-times bar-close-i"></i>
+    <i class="fa fa-times bar-close-i" @click.stop="closeFile(file)"></i>
   </div>
-  <!-- <div class="file-bar-div  file-bar-chose-div">
+  <!-- <div class="file-tab-div  file-tab-chose-div">
                                                     <i class="fa fa-times bar-close-i"></i>
                                                   </div> -->
 </template>
@@ -12,32 +12,33 @@
 import * as types from '../../store/mutation-types'
 export default {
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
     isCurentShowFile() {
-      return this.file.path === this.$store.getters.getCurrentShowFile.path
+      return this.file.path === this.$store.getters.getCrrentFile.path
     }
   },
   props: {
     file: {},
     index: {}
   },
-  created() {
-  },
+  created() {},
   methods: {
-    changeOpenFile(fileObj) {
+    choseCurrentFile(fileObj) {
       let file = this.$store.getters.getFileBarArray[this.index]
-      this.$store.dispatch(types.SET_CURRENT_SHOW_FILE, file)// 设置当前打开的文件路径
+      this.$store.dispatch(types.SET_CURRENT_FILE, file) // 设置当前打开的文件路径
+    },
+    closeFile(fileObj) {
+      this.$store.dispatch(types.RESET_CURRENT_FILE) // 重置当前文件
+      this.$store.dispatch(types.DELETE_FILE_TAB_ITEM, fileObj.path) // 关闭文件
     }
   }
 }
-
 </script>
 
 <style lang="scss">
-.file-bar-div {
+.file-tab-div {
   height: 100%;
   min-width: 150px;
   border-left-color: rgb(243, 243, 243);
@@ -48,6 +49,7 @@ export default {
   position: relative; // border: 1px solid transparent;
   border-left: 1px solid #f3f3f3;
   border-right: 1px solid #f3f3f3;
+  user-select: none;
   cursor: pointer;
 
   .file-name-span {
@@ -59,10 +61,11 @@ export default {
     /* display: block; */
   }
 
-  &:hover>.bar-close-i {
+  &:hover > .bar-close-i {
     visibility: visible;
   }
   .bar-close-i {
+    //关闭按钮<i></i>标签样式
     visibility: hidden;
     position: absolute;
     left: 133px;
@@ -70,7 +73,7 @@ export default {
   }
 }
 
-.file-bar-current-div {
+.file-tab-current-div {
   background-color: white;
 }
 </style>

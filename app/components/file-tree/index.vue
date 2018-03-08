@@ -19,16 +19,16 @@
           <i class="fa fa-plus file-btn-plus-i"></i>
           <i class="fa fa-folder-open file-btn-i" style="transform: scaleY(1.3);"></i>
         </span>
-        <!-- 刷新文件目录按钮 -->
-        <span class="file-btn-span">
-          <i class="fa fa-refresh file-btn-i"></i>
+        <!-- 删除按钮 -->
+        <span class="file-btn-span" @click="deleteItem">
+          <i class="fa fa-trash file-btn-i" style="font-size: 18px;"></i>
         </span>
       </span>
     </div>
     <!--文件目录树展示div-->
     <div class="file-content-div">
       <!--文件目录内容-->
-      <file-item v-for="item in fileTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum">
+      <file-item v-for="item in filesTree" :key="item" :file-tree="item" :left="left" :left-add-num="leftAddNum">
       </file-item>
     </div>
 
@@ -36,25 +36,26 @@
 </template>
 <script>
 import * as types from '../../store/mutation-types'
-import FILE_TREE from '../../static/js/init.js'
+import { filesTree, dirMap } from '../../static/js/init.js'
 import FileItem from './file-item.vue'
-// import fileOperator from '../../static/utils/file-operator.js'
+import * as FileOperator from '../../static/utils/file-operator.js'
 
 export default {
   data() {
     return {
-      fileTree: [], // 文件树
+      filesTree: [], // 文件树
       rootPath: '', // 根目录路径
       left: 12, // 文件树CSS样式定位值
       leftAddNum: 12 // 文件树CSS样式定位累加值
     }
   },
-  computed: {
-  },
+  computed: {},
   created() {
-    this.fileTree = [FILE_TREE] // 初始化文件树
-    this.rootPath = FILE_TREE.path // 初始化根目录路径数据
-    // this.$store.dispatch(types.SET_ROOT_PATH, FILE_TREE.path)
+    this.$store.dispatch(types.SET_DIR_MAP, dirMap)
+    this.$store.dispatch(types.SET_FILES_TREE, filesTree)
+
+    this.filesTree = [filesTree] // 初始化文件树
+    this.rootPath = filesTree.path // 初始化根目录路径数据
   },
   methods: {
     // 显示输入框，通过type区分是创建文件还是创建文件夹，1文件，2文件夹
@@ -74,11 +75,24 @@ export default {
     setCurrentPath() {
       if (!this.$store.getters.currentDirPath) {
         this.$store.dispatch(types.SET_CURRENT_DIR_PATH, this.rootPath)
-        this.$store.dispatch(types.SET_CURRENT_DIR_OBJ, FILE_TREE)
+        this.$store.dispatch(types.SET_CURRENT_DIR_OBJ, filesTree)
       }
       if (this.$store.getters.currentDirOBJ.isFold) {
         this.$store.dispatch(types.UPDATE_CURRENT_DIR_OBJ_FOLD)
       }
+    },
+    deleteItem() {
+      let clickFile = this.$store.getters.clickFileObj
+      let filePath = clickFile.path
+      if (!clickFile || !filePath) {
+        return
+      }
+      if (clickFile.isDir) {
+        FileOperator.deleteDir(filePath)
+      }
+      FileOperator.deleteFile(filePath)
+
+      this.$store.dispatch(types.DELETE_ITEM, clickFile)
     }
   },
   components: {

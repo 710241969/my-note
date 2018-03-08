@@ -93,13 +93,14 @@ export default {
       .window-i {
         width: 40px;
         text-align: center;
+        background-color: #f0f0f0;
         color: #969696;
         cursor: pointer;
         border-bottom: 1px solid ghostwhite;
         border-left: 1px solid ghostwhite;
         border-right: 1px solid ghostwhite;
         &:hover {
-          background-color: #f0f0f0;
+          background-color: #cccedb;
         }
       }
       .window-i-close {

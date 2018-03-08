@@ -4,8 +4,7 @@ export const SET_CLICK_FILE_PATH = 'SET_CLICK_FILE_PATH'
 export const SET_CLICK_FILE_OBJ = 'SET_CLICK_FILE_OBJ'
 export const SET_INPUT_VISIBLE = 'SET_INPUT_VISIBLE'
 export const SET_CURRENT_DIR_PATH = 'SET_CURRENT_DIR_PATH' // 设置当前目录路径
-export const ADD_FILE_BAR_ITEM = 'ADD_FILE_BAR_ITEM'
-export const SET_CURRENT_SHOW_FILE = 'SET_CURRENT_SHOW_FILE'// 设置当前打开的文件路径
+
 export const SET_OPEN_FILE_OBJ = 'SET_OPEN_FILE_OBJ'
 export const CHECKOUT_SUCCESS = 'CHECKOUT_SUCCESS'
 export const CHECKOUT_FAILURE = 'CHECKOUT_FAILURE'
@@ -19,3 +18,15 @@ export const SET_CREATE_TYPE = 'SET_CREATE_TYPE'
 export const SET_CURRENT_DIR_OBJ = 'SET_CURRENT_DIR_OBJ'
 export const UPDATE_CURRENT_DIR_OBJ_FOLD = 'UPDATE_CURRENT_DIR_OBJ_FOLD'
 
+// 文件Tab标签列表
+export const ADD_FILE_TAB_ITEM = 'ADD_FILE_TAB_ITEM' // 增加（打开文件）
+export const DELETE_FILE_TAB_ITEM = 'DELETE_FILE_TAB_ITEM' // 删除（关闭文件）
+
+// 当前编辑的文件
+export const SET_CURRENT_FILE = 'SET_CURRENT_FILE' // 设置当前打开的文件路径
+export const RESET_CURRENT_FILE = 'RESET_CURRENT_FILE' // 删除（关闭文件）
+
+export const SET_FILES_TREE = 'SET_FILES_TREE' //
+export const SET_DIR_MAP = 'SET_DIR_MAP' //
+
+export const DELETE_ITEM = 'DELETE_ITEM'
